@@ -1,0 +1,155 @@
+\usepackage[margin=0mm]{geometry}
+\usepackage{tikz}
+\usepackage{relsize}
+\usepackage[skins]{tcolorbox}
+\usepackage{ifthen}
+
+\definecolor{bgcolor}{HTML}{FEFEE2}
+
+\newcommand{\capitalize}[1]{\expandafter\MakeUppercase\expandafter{#1}}
+\newcommand{\toLowerCase}[1]{\expandafter\MakeLowercase\expandafter{#1}}
+
+\newcommand{\setname}[2]{%
+  \textsf{%
+  \fontfamily{Cabin-TLF}%
+  \selectfont%
+  \textcolor{#2}{\large\textbf{\capitalize{#1}}}%
+}}
+
+\newcommand{\currentSize}{}
+\newcommand{\sizeExt}{}
+\newcommand{\cardColor}{black}
+
+
+
+\newcommand{\setColor}[1]{%
+  \renewcommand{\cardColor}{#1}
+}%
+
+\newcommand{\setSize}[1]{%
+  \renewcommand{\currentSize}{#1}
+  \ifthenelse{\equal{#1}{BIG}}
+    {% True case
+     \pgfmathsetmacro{\cardwidth}{4.4}
+     \pgfmathsetmacro{\cardheight}{7.6}
+     \pgfmathsetmacro{\marginsize}{0.6}
+     \pgfmathsetmacro{\namesize}{1.5}
+     \pgfmathsetmacro{\verticalspacesize}{\marginsize}
+     \renewcommand{\sizeExt}{1024}
+    }
+    {% false case
+     \pgfmathsetmacro{\cardwidth}{3.2}
+     \pgfmathsetmacro{\cardheight}{3.6}
+     \pgfmathsetmacro{\marginsize}{0.3}
+     \pgfmathsetmacro{\namesize}{0.8}
+     \pgfmathsetmacro{\verticalspacesize}{0.1}
+     \renewcommand{\sizeExt}{512}
+    }
+}%
+
+
+\newcommand{\bgcard}{%
+  \noindent\begin{tikzpicture}[y=-1cm]%
+    \draw[fill=bgcolor, fill zoom image=bg] (0,0) rectangle (\cardwidth,\cardheight);%all card
+  \end{tikzpicture}%
+%hex code for sfeir color : f1471d
+}%
+
+
+\newcommand{\card}[1]{%
+  \noindent\begin{tikzpicture}%
+    \draw[fill=\cardColor] (0,0) rectangle (\cardwidth,\cardheight);%all the card size
+%    \path[fill=white] (\marginsize,\marginsize+\namesize+\marginsize) rectangle (\cardwidth-\marginsize,\cardheight-\marginsize);% Image box
+%\path[fill=white] (\marginsize,\marginsize) rectangle (\cardwidth-\marginsize,\namesize+\marginsize) node[midway] {\setname{%
+    \path[fill=white, fill zoom image=logos/#1_\sizeExt] (\marginsize,\marginsize+\namesize+\verticalspacesize) rectangle (\cardwidth-\marginsize,\cardheight-\marginsize);% Image box
+\path[fill=white] (\marginsize,\marginsize) rectangle (\cardwidth-\marginsize,\namesize+\marginsize) node[midway] {\setname{%
+    \relsize{0.7}#1%
+    }{\cardColor}};%
+  \end{tikzpicture}%
+}%
+
+
+% hack to avoir 9 arguments limit
+\newcommand{\cards}[9]{%
+  \def\tempa{#1}%
+  \def\tempb{#2}%
+  \def\tempc{#3}%
+  \def\tempd{#4}%
+  \def\tempe{#5}%
+  \def\tempf{#6}%
+  \def\tempg{#7}%
+  \def\temph{#8}%
+  \def\tempi{#9}%
+  \cardscontinued
+}
+\newcommand\cardscontinued[9]{%
+  \def\tempj{#1}%
+  \def\tempk{#2}%
+  \def\templ{#3}%
+  \def\tempm{#4}%
+  \def\tempn{#5}%
+  \def\tempo{#6}%
+  \def\tempp{#7}%
+  \def\tempq{#8}%
+  \def\tempr{#9}%
+  \cardsfinished
+}
+
+\newcommand\cardsfinished[6]{%
+  \card{\tempa}%
+  \card{\tempb}%
+  \card{\tempc}%
+  \card{\tempd}\\
+  \card{\tempe}%
+  \card{\tempf}%
+  \card{\tempg}%
+  \card{\temph}\\
+  \card{\tempi}%
+  \card{\tempj}%
+  \card{\tempk}%
+  \card{\templ}%
+    \ifthenelse{\equal{\currentSize}{BIG}}
+      {% True case
+        \newpage%
+        \bgcards%
+        \newpage%
+      }
+      {% false case
+        \newline
+      }
+  \card{\tempm}%
+  \card{\tempn}%
+  \card{\tempo}%
+  \card{\tempp}\\
+  \card{\tempq}%
+  \card{\tempr}%
+  \card{#1}%
+  \card{#2}\\
+  \card{#3}%
+  \card{#4}%
+  \card{#5}%
+  \card{#6}%
+  \newpage%
+  \bgcards%
+  \newpage%
+}%
+
+
+\newcommand{\bgcards}{%
+  \ifthenelse{\equal{\currentSize}{BIG}}
+    {% True case
+     \def\n{3}
+    }
+    {% false case
+     \def\n{6}
+    }
+  \begin{flushright}
+    \foreach \i in {1,...,\n}{%
+       \bgcard%
+       \bgcard%
+       \bgcard%
+       \bgcard\\
+    }%
+  \end{flushright}
+}%
+
