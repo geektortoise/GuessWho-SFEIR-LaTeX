@@ -13,3 +13,7 @@ then
     
 Note that, for licence reason, I didn't integrate the images. You can mainly find them on [devicon.dev](https://devicon.dev/) (and you can give them a star ;-) ).
 
+## Output example
+
+![image](https://github.com/geektortoise/GuessWho-SFEIR-LaTeX/assets/8018298/5f583efc-d81f-4cdb-8aec-2f079084a351)
+
